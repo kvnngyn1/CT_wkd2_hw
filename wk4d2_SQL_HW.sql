@@ -14,6 +14,11 @@ WHERE amount > 6.99;
 
 -- 3. Show all customers names who have made payments over $175
 -- (use subqueries)
+SELECT *
+FROM customer
+WHERE customer_id IN (SELECT customer_id FROM payment WHERE amount > 10)
+
+-- (USED JOINs)
 -- Didn't use where because it couldnt taking aggregate functions
 -- there is no payments over 175, so i used 10 to check if my query worked
 -- played with ascending and decending order
@@ -39,7 +44,7 @@ WHERE country = 'Nepal';
 SELECT staff.staff_id, staff.username, count(payment.amount)
 FROM staff
 JOIN payment ON staff.staff_id = payment.staff_id
-GROUP BY staff.staff_id, staff.username
+GROUP BY staff.staff_id, staff.username;
 
 -- 6. How many movies of each rating are there?
 -- I included 'order by' to organize the count(title) in ascending order
@@ -51,6 +56,18 @@ ORDER BY COUNT(title);
 
 -- 7. Show all customers who have made a single payment above $6.99
 -- (Use subqueries)
+SELECT *
+FROM customer
+WHERE customer_id IN (SELECT customer_id FROM payment WHERE amount > 6.99);
+
+-- lazy
+SELECT customer_id, amount
+FROM payment
+WHERE amount > 6.99
+GROUP BY customer_id, amount
+ORDER BY amount;
+
+-- (join version)
 SELECT customer.customer_id, payment.amount
 FROM payment
 JOIN customer ON payment.customer_id = customer.customer_id
@@ -61,6 +78,6 @@ ORDER BY payment.amount;
 -- 8. How many free rentals did our stores give away?
 SELECT COUNT(amount)
 FROM payment
-WHERE amount = 0
+WHERE amount = 0;
 
 
